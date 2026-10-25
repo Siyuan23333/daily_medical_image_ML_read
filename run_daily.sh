@@ -1,6 +1,12 @@
 #!/bin/bash
 # DailyRead single-command entry point. Usage: ./run_daily.sh [run options]   (see: ./run_daily.sh --help)
 set -euo pipefail
+# Self-contained environment: scrontab/Slurm jobs do not load ~/.bashrc or modules, so set what we need here.
+# Everything below is on the system paths (git, sendmail) or inside the venv, which is built on the system python.
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
+export LANG="${LANG:-C.UTF-8}" LC_ALL="${LC_ALL:-C.UTF-8}" PYTHONUTF8=1 PYTHONUNBUFFERED=1
+: "${HOME:=$(getent passwd "$(id -un)" | cut -d: -f6)}"; export HOME
+umask 077
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ENV_FILE="${DAILY_READ_ENV:-$HOME/.daily_read.env}"
 VENV="${DAILY_READ_VENV:-$HOME/envs/daily_read}"

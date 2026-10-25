@@ -29,6 +29,9 @@ chmod 600 ~/.daily_read.env     # DEEPSEEK_API_KEY, GITHUB_TOKEN, GITHUB_REPO, S
 ./run_daily.sh stats                        # score distribution and recent scored papers
 ```
 
+`run_daily.sh` sets its own PATH, locale and HOME and references the venv and env file by absolute path, so it
+runs the same under scrontab (which ignores your shell environment and never loads `~/.bashrc`) as from a terminal.
+
 Reports: `digests/YYYY-MM-DD.html` and `.md`, plus `digests/index.html`. State: `state/daily_read.sqlite`
 (backed up to `~/daily_read_state/`). Logs: `logs/`.
 
