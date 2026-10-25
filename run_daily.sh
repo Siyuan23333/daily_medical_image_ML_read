@@ -14,6 +14,9 @@ VENV="${DAILY_READ_VENV:-$HOME/envs/daily_read}"
 [ -x "$VENV/bin/python" ] || { echo "missing venv at $VENV (python -m venv $VENV && $VENV/bin/pip install -r $HERE/requirements.txt)" >&2; exit 2; }
 cd "$HERE"
 mkdir -p logs state digests
+# One run at a time: a manual run and the scheduled job must not share the SQLite state concurrently.
+exec 9>"$HERE/state/.run.lock"
+flock -n 9 || { echo "another DailyRead run is in progress (lock: $HERE/state/.run.lock); try again when it finishes" >&2; exit 3; }
 if [ "${1:-}" = "--help" ] || [ "${1:-}" = "-h" ]; then exec "$VENV/bin/python" -m daily_read run --help; fi
 case "${1:-}" in rebuild|stats|test-email|test-llm) exec "$VENV/bin/python" -m daily_read "$@";; esac
 exec "$VENV/bin/python" -m daily_read run "$@"

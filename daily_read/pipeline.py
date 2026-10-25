@@ -46,6 +46,26 @@ def threshold_for(p: Paper, thresholds: Dict[str, int], query_thresholds: Dict[s
     return thresholds.get(cls, max(thresholds.values()))
 
 
+def assign_days(dated: List[Tuple[str, Optional[date]]], first_open: date, horizon: date, max_days: int):
+    """Map (key, digest_date) pairs to report days. Days run from first_open (capped to max_days) up to horizon.
+    A paper dated before that range is a late arrival and lands in the horizon day, tagged with its original date,
+    except when it is dated the horizon day itself (that is simply more of an already-reported day, see _generate_reports).
+    Returns (plan: day -> [keys], late: key -> original day, truncated)."""
+    earliest = max(first_open, horizon - timedelta(days=max_days - 1))
+    truncated = earliest > first_open
+    plan: Dict[str, List[str]] = {d.isoformat(): [] for d in daterange(earliest, horizon)} if earliest <= horizon else {}
+    late: Dict[str, str] = {}
+    for key, d in dated:
+        d = d or horizon
+        if d > horizon:
+            continue
+        if d < earliest and d != horizon:
+            late[key] = d.isoformat()
+            d = horizon
+        plan.setdefault(d.isoformat(), []).append(key)
+    return plan, late, truncated
+
+
 def impact_ok(p: Paper, min_if: float) -> bool:
     """Impact-factor cut: journal papers whose known venue impact is below min_if are dropped.
     Preprints and venues with no known value always pass."""
@@ -68,6 +88,7 @@ class Options:
         self.max_days: Optional[int] = kw.get("max_days")
         self.threshold: Optional[int] = kw.get("threshold")
         self.sources: Optional[List[str]] = kw.get("sources")
+        self.include_today: bool = kw.get("include_today", False)  # manual runs: report what is visible so far today
 
 
 class Pipeline:
@@ -108,6 +129,10 @@ class Pipeline:
 
     def eligible(self, p: Paper, score: Optional[int]) -> bool:
         return self.query_active(p) and self.passes_score(p, score) and impact_ok(p, self.min_if)
+
+    def _horizon(self, today: date) -> date:
+        """Last calendar day a run reports: yesterday normally, today for a manual --include-today run."""
+        return today if self.opts.include_today else today - timedelta(days=1)
 
     def _refresh(self, rows: List) -> List:
         if not rows:
@@ -249,7 +274,7 @@ class Pipeline:
         fresh, cached_scored = [], []
         for p in papers:
             d = self.digest_date_for(p, first_open, today)
-            if self.cfg.settings["window"].get("deferral", True) and d >= today:
+            if self.cfg.settings["window"].get("deferral", True) and d > self._horizon(today):
                 self.counts["deferred"] += 1
                 continue
             p.extra["digest_date"] = d.isoformat()
@@ -324,7 +349,7 @@ class Pipeline:
 
     # ---------- reports ----------
     def _generate_reports(self, today: date, first_open: date, start: datetime, end: datetime) -> None:
-        yesterday = today - timedelta(days=1)
+        horizon = self._horizon(today)
         rows, below, stale = [], [], []
         for r in self.state.rows("status='scored' AND score IS NOT NULL"):
             p = Paper.from_json(r["record"])
@@ -341,23 +366,13 @@ class Pipeline:
             self.state.set_status([r["key"] for r in stale], "excluded", reason="pubmed query removed from config")
             self.counts["stale_query"] = len(stale)
         rows = self._apply_impact_cut(self._annotate_impact(rows))
-        if not rows and first_open > yesterday:
+        if not rows and first_open > horizon:
             log.info("nothing to report")
             return
         max_days = int(self.opts.max_days or self.cfg.settings["window"]["max_catchup_days"])
-        earliest = max(first_open, yesterday - timedelta(days=max_days - 1))
-        truncated = earliest > first_open
-        # assign each row to a day; late ones go to yesterday
-        plan: Dict[str, List] = {d.isoformat(): [] for d in daterange(earliest, yesterday)}
-        late: Dict[str, str] = {}
-        for r in rows:
-            d = parse_date(r["digest_date"]) or yesterday
-            if d < earliest:
-                late[r["key"]] = d.isoformat()
-                d = yesterday
-            if d > yesterday:
-                continue
-            plan.setdefault(d.isoformat(), []).append(r)
+        by_key = {r["key"]: r for r in rows}
+        plan_keys, late, truncated = assign_days([(r["key"], parse_date(r["digest_date"])) for r in rows], first_open, horizon, max_days)
+        plan: Dict[str, List] = {day: [by_key[k] for k in keys] for day, keys in plan_keys.items()}
         pub = Publisher(self.cfg)
         do_push = pub.enabled and not self.opts.no_push
         if not pub.enabled:
@@ -367,17 +382,25 @@ class Pipeline:
         window_str = f"{start.astimezone(self.tz):%Y-%m-%d %H:%M} to {end.astimezone(self.tz):%Y-%m-%d %H:%M} {self.tz}"
         days = sorted(plan)
         for i, day in enumerate(days):
-            day_rows = plan[day]
-            log.info("report %s: %d papers", day, len(day_rows))
+            new_rows = plan[day]
+            # a day that already has a report (a manual --include-today run earlier, or a second run the same day)
+            # keeps its papers and grows; the page is regenerated and re-sent with the number of additions
+            existing = self.state.rows("status='reported' AND digest_date=?", (day,))
+            new_keys = {r["key"] for r in new_rows}
+            day_rows = [r for r in existing if r["key"] not in new_keys] + new_rows
+            n_new = len(new_rows) if existing else 0
+            log.info("report %s: %d papers%s", day, len(day_rows), f" ({n_new} new since the earlier report)" if existing else "")
             day_rows, headline = self._enrich_day(day, day_rows, None)
             note = ""
             if truncated and i == 0:
                 note = f"earlier days were skipped (catch-up capped at {max_days} days)"
+            if existing:
+                note = (note + "; " if note else "") + f"{n_new} added since the earlier report for this day"
             n_late = sum(1 for r in day_rows if r["key"] in late)
             if n_late:
                 note = (note + "; " if note else "") + f"{n_late} late arrival{'s' if n_late > 1 else ''} from earlier days"
             # render
-            prev_date = days[i - 1] if i > 0 else (self.state.latest_report_date() or "")
+            prev_date = days[i - 1] if i > 0 else max((r["date"] for r in self.state.reports() if r["date"] < day), default="")
             out = render.render_day(self.cfg, day, [self._with_late(r, late) for r in day_rows], headline, note, self.failed_sources, window_str, prev_date=prev_date or "", next_date=days[i + 1] if i + 1 < len(days) else "")
             html_path, md_path = digests / f"{day}.html", digests / f"{day}.md"
             html_path.write_text(out["html"])
@@ -403,7 +426,7 @@ class Pipeline:
             # email
             if not self.opts.no_email:
                 counts_str = ", ".join(f"{k} {v}" for k, v in sorted(out["counts"].items(), key=lambda kv: -kv[1]))
-                subject = f"{self.cfg.settings['email']['subject_prefix']} {day}: {len(day_rows)} papers" + (f" ({counts_str})" if counts_str else "")
+                subject = f"{self.cfg.settings['email']['subject_prefix']} {day}: {len(day_rows)} papers" + (f" (+{n_new} new)" if existing else "") + (f" ({counts_str})" if counts_str else "")
                 em = render.render_email(self.cfg, day, url, len(day_rows), headline, out["deepdives"], self.failed_sources, n_curated=out.get("n_curated", 0))
                 if mail.send(self.cfg, subject, em["text"], em["html"]):
                     self.state.mark_report(day, emailed=1)

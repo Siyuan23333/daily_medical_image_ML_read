@@ -157,6 +157,21 @@ def test_personal_values_come_from_env(monkeypatch):
     assert "mailto:x@example.org" in user_agent()
 
 
+def test_assign_days():
+    from datetime import date
+    from daily_read.pipeline import assign_days
+    D = date
+    # ordinary morning: one day, yesterday
+    plan, late, trunc = assign_days([("a", D(2026, 10, 24)), ("b", D(2026, 10, 25))], D(2026, 10, 24), D(2026, 10, 24), 7)
+    assert plan == {"2026-10-24": ["a"]} and late == {} and not trunc      # b is dated after the horizon and waits
+    # catch-up capped at 3 days: older papers become late arrivals in the newest day
+    plan, late, trunc = assign_days([("old", D(2026, 10, 18)), ("c", D(2026, 10, 23))], D(2026, 10, 18), D(2026, 10, 24), 3)
+    assert sorted(plan) == ["2026-10-22", "2026-10-23", "2026-10-24"] and plan["2026-10-24"] == ["old"] and late == {"old": "2026-10-18"} and trunc
+    # a report for the horizon day already exists (first_open is past it): same-day papers extend it, older ones are late
+    plan, late, _ = assign_days([("x", D(2026, 10, 25)), ("y", D(2026, 10, 24))], D(2026, 10, 26), D(2026, 10, 25), 7)
+    assert plan == {"2026-10-25": ["x", "y"]} and late == {"y": "2026-10-24"}
+
+
 def test_per_query_threshold():
     from daily_read.pipeline import threshold_for
     th, qth = {"curated": 7, "pubmed_query": 9, "preprint": 9}, {"hrpqct_dxa": 8}

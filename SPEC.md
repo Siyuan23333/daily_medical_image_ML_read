@@ -288,6 +288,12 @@ Reports are always per calendar day (America/New_York), never per run.
 - A normal run covers the window `[last_success - 12 h, now]`, groups new
   papers by digest date, and produces one report per date that has at least
   one new paper. On an ordinary morning that is one report, for yesterday.
+- Manual runs (`--include-today`, wrapped by the `/daily-read-now` Claude Code
+  skill) report everything since the last report including papers visible so
+  far today. The next run extends that day's page with later arrivals and
+  re-sends it with a "+N new" subject; a page for a day is therefore never
+  replaced by a smaller one. A lock file keeps manual and scheduled runs from
+  overlapping.
 - If a run is skipped or delayed (standby queue, outage, travel), the next run's
   window extends back to the last success, capped at 7 days, and produces
   one report per missed day, each containing only that day's papers, each
@@ -404,6 +410,7 @@ pymupdf, jinja2, pyyaml, openai (client for DeepSeek), rapidfuzz, pytest.
 | 2026-10-25 | Run time moved to 01:00 Eastern (standby kept, no deadline flag) |
 | 2026-10-25 | Partition changed from a10 to a30 (group allocation holds 2 A30 GPUs) |
 | 2026-10-25 | Personal values (contact address, digest recipients, Slurm account) moved from the repo to the env file before publishing the code; scrontab.txt is rendered from scrontab.template by install_scrontab.sh |
+| 2026-10-25 | Manual on-demand report: `--include-today` run option, same-day report extension, run lock, and the `/daily-read-now` project skill |
 | 2026-10-25 | Curated-journal papers highlighted: listed first within each track, 'journal list' pill next to the venue in the contents table and card meta, accent left border on cards, header chip with the count, 'only journal list' toggle (per-viewer, localStorage); ★ prefix in the Markdown twin and email. PubMed journal titles cleaned (subtitle and place qualifiers dropped, ISO abbreviation fallback, conservative title case) after a 176-character title broke the contents table |
 
 ## 15. Before the build can finish

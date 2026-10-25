@@ -44,6 +44,7 @@ def main(argv=None) -> None:
     run.add_argument("--until", help="window end date YYYY-MM-DD (exclusive, local midnight)")
     run.add_argument("--limit", type=int, help="score at most N candidates (trial runs)")
     run.add_argument("--max-days", type=int, help="override max catch-up days")
+    run.add_argument("--include-today", action="store_true", help="manual run: also report papers visible so far today (the next run extends that page)")
     run.add_argument("--threshold", type=int, help="override every per-source threshold with this one score")
     run.add_argument("--sources", help="comma-separated subset of arxiv,biorxiv,pubmed,crossref,springer")
     rb = sub.add_parser("rebuild", help="re-render one day's page from stored results")
@@ -60,7 +61,7 @@ def main(argv=None) -> None:
     cmd = args.cmd or "run"
     if cmd == "run":
         opts = Options(dry_run=args.dry_run, no_llm=args.no_llm, no_email=args.no_email, no_push=args.no_push, since=args.since,
-                       until=args.until, limit=args.limit, max_days=args.max_days, threshold=args.threshold,
+                       until=args.until, limit=args.limit, max_days=args.max_days, threshold=args.threshold, include_today=args.include_today,
                        sources=args.sources.split(",") if args.sources else None)
         code = Pipeline(cfg, opts).run()
         print(f"log: {log_path}", file=sys.stderr)

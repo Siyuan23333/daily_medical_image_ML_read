@@ -25,12 +25,17 @@ chmod 600 ~/.daily_read.env     # DEEPSEEK_API_KEY, GITHUB_TOKEN, GITHUB_REPO, S
 ./run_daily.sh --no-llm                     # collect + prefilter only, list candidates
 ./run_daily.sh --no-email --no-push         # full run but keep everything local
 ./run_daily.sh --since 2026-10-20           # one report per day from that date (catch-up)
+./run_daily.sh --include-today              # manual run: everything since the last report, including today so far
 ./run_daily.sh rebuild --date 2026-10-24    # re-render one day's page from stored results
 ./run_daily.sh stats                        # score distribution and recent scored papers
 ```
 
 `run_daily.sh` sets its own PATH, locale and HOME and references the venv and env file by absolute path, so it
 runs the same under scrontab (which ignores your shell environment and never loads `~/.bashrc`) as from a terminal.
+
+In Claude Code, `/daily-read-now` (project skill in `.claude/skills/daily-read-now/`) runs the manual form and summarizes the result.
+A day's page can grow: if a later run finds more papers for a day that already has a report, the page is regenerated with
+the additions and re-sent with a "+N new" subject. Only one run can hold `state/.run.lock` at a time.
 
 Reports: `digests/YYYY-MM-DD.html` and `.md`, plus `digests/index.html`. State: `state/daily_read.sqlite`
 (backed up to `~/daily_read_state/`). Logs: `logs/`.
