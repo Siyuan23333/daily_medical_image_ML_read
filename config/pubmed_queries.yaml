@@ -1,0 +1,25 @@
+# Standing PubMed topic queries (run across all journals). Date window is added by the pipeline.
+queries:
+  - key: radiomics
+    term: 'radiomic*[tiab] OR "radiomics"[MeSH Terms]'
+  - key: bone_ml
+    term: >-
+      (bone[tiab] OR osteopor*[tiab] OR fracture*[tiab] OR skeletal[tiab] OR osteoarthritis[tiab]
+       OR "bone mineral density"[tiab] OR DXA[tiab] OR "dual-energy x-ray"[tiab] OR HR-pQCT[tiab]
+       OR vertebra*[tiab] OR hip[tiab] OR femur[tiab] OR spine[tiab] OR orthop*[tiab] OR "bone age"[tiab])
+      AND ("deep learning"[tiab] OR "machine learning"[tiab] OR "artificial intelligence"[tiab]
+       OR "neural network*"[tiab] OR radiomic*[tiab] OR "foundation model*"[tiab] OR "convolutional"[tiab]
+       OR transformer[tiab] OR "large language model*"[tiab])
+  - key: hrpqct_dxa
+    # Bone densitometry and microarchitecture imaging, with or without ML (user request 2026-10-25):
+    # HR-pQCT/pQCT/TBS anywhere, DXA only in a bone context (keeps body-composition DXA papers out).
+    # Optional per-query threshold; queries without one use relevance.thresholds.pubmed_query.
+    threshold: 8
+    term: >-
+      ("HR-pQCT"[tiab] OR HRpQCT[tiab] OR "HR pQCT"[tiab] OR pQCT[tiab]
+       OR "peripheral quantitative computed tomography"[tiab] OR "trabecular bone score"[tiab])
+      OR ((DXA[tiab] OR DEXA[tiab] OR "dual-energy x-ray absorptiometry"[tiab] OR "dual energy x-ray absorptiometry"[tiab]
+           OR "bone densitometry"[tiab] OR "Absorptiometry, Photon"[MeSH Terms])
+          AND (bone[tiab] OR osteopor*[tiab] OR osteopenia[tiab] OR fracture*[tiab] OR skeletal[tiab]
+               OR "bone mineral density"[tiab] OR BMD[tiab] OR trabecular[tiab] OR cortical[tiab] OR microarchitecture[tiab]))
+# imaging_dl query dropped 2026-10-25 (user decision): imaging ML is covered by arXiv and the curated imaging journals.

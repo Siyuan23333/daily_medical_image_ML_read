@@ -1,0 +1,9 @@
+state/
+logs/
+site/
+__pycache__/
+*.pyc
+.pytest_cache/
+digests/
+digests_trial/
+scrontab.txt

@@ -1,0 +1,76 @@
+# Non-secret settings for DailyRead. Secrets live in ~/.daily_read.env.
+timezone: America/New_York
+project_name: DailyRead
+
+window:
+  overlap_hours: 12          # look back this much before the last successful run
+  max_catchup_days: 7        # never generate more than this many daily reports per run
+  deferral: true             # papers dated today or later wait for the next run
+  hold_without_abstract_days: 5   # Crossref-detected papers wait this long for an abstract
+
+relevance:
+  # Minimum LLM score per source class (decided 2026-10-25 after the DeepSeek trial).
+  thresholds:
+    curated: 7           # the journals in config/journals.yaml
+    pubmed_query: 9      # PubMed topic queries in config/pubmed_queries.yaml
+    preprint: 9          # arXiv, medRxiv, bioRxiv
+  # Journal papers whose venue impact factor is below this are dropped (JCR value from
+  # config/impact_factors.yaml, otherwise OpenAlex 2-year citedness). Preprints and
+  # venues with no known value are kept. 0 disables the cut.
+  min_impact_factor: 2
+  top_n_deepdive: 5
+  score_batch_size: 8
+
+llm:
+  base_url: https://api.deepseek.com
+  model: deepseek-chat
+  deepdive_model: deepseek-chat
+  temperature: 0.2
+  max_fulltext_chars: 90000  # ~25k tokens
+  timeout_seconds: 120
+  max_retries: 3
+
+fulltext:
+  order: [open_access, preprint, publisher_api, abstract_only]
+  unpaywall_email: ""            # set CONTACT_EMAIL in ~/.daily_read.env; also used for Crossref, OpenAlex, NCBI and the User-Agent
+  crossref_mailto: ""
+
+email:
+  enabled: true
+  to: []                         # set DIGEST_EMAIL_TO in ~/.daily_read.env (comma-separated)
+  from: ""                       # set DIGEST_EMAIL_FROM in ~/.daily_read.env
+  subject_prefix: "[DailyRead]"
+  sendmail: /usr/sbin/sendmail
+
+publish:
+  enabled: true
+  branch: gh-pages
+  site_dir: site                      # local checkout of the gh-pages branch
+  pages_url_template: "https://{owner}.github.io/{repo}/{date}.html"
+  verify_timeout_minutes: 10
+
+paths:
+  state_db: state/daily_read.sqlite
+  state_backup_dir: ~/daily_read_state
+  digests_dir: digests
+  logs_dir: logs
+
+arxiv:
+  categories: [cs.CV, cs.LG, cs.AI, cs.CL, eess.IV, stat.ML, q-bio.QM]
+  extra_lookback_days: 4     # arXiv announces weekend/holiday submissions late
+  page_size: 200
+  delay_seconds: 3
+
+biorxiv:
+  servers: [medrxiv, biorxiv]
+  new_versions_only: true
+
+tracks:
+  - key: imaging-ml
+    label: Medical imaging ML
+  - key: radiomics
+    label: Radiomics
+  - key: bone
+    label: Bone and skeletal
+  - key: ehr-nlp
+    label: EHR and clinical NLP

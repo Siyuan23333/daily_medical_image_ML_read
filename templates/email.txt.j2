@@ -1,0 +1,12 @@
+DailyRead {{ date }}: {{ n_papers }} relevant papers{% if n_curated %} ({{ n_curated }} from your journal list, marked ★){% endif %}
+{{ url }}
+
+{{ headline }}
+
+{% if deepdives %}Deep dives:
+{% for p in deepdives %}- {{ '★ ' if p.curated }}{{ p.title }} ({{ p.venue }}, {{ p.track }}, score {{ p.score }})
+  {{ p.one_liner }}
+{% endfor %}{% endif %}
+{% if failed_sources %}Sources that failed this run: {{ failed_sources|join(', ') }}
+{% endif %}
+Full digest: {{ url }}

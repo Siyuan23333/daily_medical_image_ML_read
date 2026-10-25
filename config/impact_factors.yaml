@@ -1,0 +1,20 @@
+# Journal Impact Factors for the curated list (Clarivate JCR as reported by publishers/aggregators; "year" = citation year).
+# Any ISSN variant works. Journals not listed here fall back to OpenAlex 2-year mean citedness (approximate).
+journals:
+  - {name: Nature Medicine, issn: [1546-170X, 1078-8956], jif: 50.0, year: 2024}
+  - {name: Nature Machine Intelligence, issn: [2522-5839], jif: 23.9, year: 2024}
+  - {name: Nature Biomedical Engineering, issn: [2157-846X], jif: 26.3, year: 2025}
+  - {name: npj Digital Medicine, issn: [2398-6352], jif: 15.1, year: 2024}
+  - {name: The Lancet Digital Health, issn: [2589-7500], jif: 24.1, year: 2024}
+  - {name: JAMIA, issn: [1527-974X, 1067-5027], jif: 7.1, year: 2025}
+  - {name: JAMA Network Open, issn: [2574-3805], jif: 11.7, year: 2025}
+  - {name: Cell Reports Medicine, issn: [2666-3791], jif: 11.7, year: 2024}
+  - {name: Radiology, issn: [1527-1315, 0033-8419], jif: 17.6, year: 2025}
+  - {name: "Radiology: Artificial Intelligence", issn: [2638-6100], jif: 20.1, year: 2025}
+  - {name: IEEE Transactions on Medical Imaging, issn: [1558-254X, 0278-0062], jif: 10.0, year: 2024}
+  - {name: Medical Image Analysis, issn: [1361-8415, 1361-8423], jif: 11.8, year: 2025}
+  - {name: European Radiology, issn: [1432-1084, 0938-7994], jif: 4.7, year: 2024}
+  - {name: Journal of Bone and Mineral Research, issn: [1523-4681, 0884-0431], jif: 5.9, year: 2024}
+  - {name: JBMR Plus, issn: [2473-4039], jif: 3.0, year: 2025}
+  - {name: Bone Research, issn: [2095-6231, 2095-4700], jif: 15.0, year: 2024}
+  - {name: Bone, issn: [8756-3282, 1873-2763], jif: 3.5, year: 2024}

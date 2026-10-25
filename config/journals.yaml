@@ -1,0 +1,101 @@
+# Curated journal list. detection: springer | crossref. tier: 1 = highest priority for tie-breaks.
+journals:
+  - name: Nature Medicine
+    issn: [1546-170X]
+    publisher: springer
+    springer_id: 41591
+    detection: springer
+    tier: 1
+  - name: Nature Machine Intelligence
+    issn: [2522-5839]
+    publisher: springer
+    springer_id: 42256
+    detection: springer
+    tier: 1
+  - name: Nature Biomedical Engineering
+    issn: [2157-846X]
+    publisher: springer
+    springer_id: 41551
+    detection: springer
+    tier: 1
+  - name: npj Digital Medicine
+    issn: [2398-6352]
+    publisher: springer
+    springer_id: 41746
+    detection: springer
+    tier: 1
+    open_access: true
+  - name: The Lancet Digital Health
+    issn: [2589-7500]
+    publisher: elsevier
+    detection: crossref
+    tier: 1
+    open_access: true
+  - name: JAMIA
+    issn: [1527-974X, 1067-5027]
+    publisher: oup
+    detection: crossref
+    tier: 2
+  - name: JAMA Network Open
+    issn: [2574-3805]
+    publisher: ama
+    detection: crossref
+    tier: 2
+    open_access: true
+  - name: Cell Reports Medicine
+    issn: [2666-3791]
+    publisher: elsevier
+    detection: crossref
+    tier: 2
+    open_access: true
+  - name: Radiology
+    issn: [1527-1315, 0033-8419]
+    publisher: rsna
+    detection: crossref
+    tier: 1
+  - name: "Radiology: Artificial Intelligence"
+    issn: [2638-6100]
+    publisher: rsna
+    detection: crossref
+    tier: 1
+  - name: IEEE Transactions on Medical Imaging
+    issn: [1558-254X, 0278-0062]
+    publisher: ieee
+    detection: crossref
+    tier: 1
+  - name: Medical Image Analysis
+    issn: [1361-8415, 1361-8423]
+    publisher: elsevier
+    detection: crossref
+    crossref_issn: 1361-8415
+    tier: 1
+  - name: European Radiology
+    issn: [1432-1084, 0938-7994]
+    publisher: springer
+    springer_id: 330
+    detection: springer
+    tier: 2
+  - name: Journal of Bone and Mineral Research
+    short: JBMR
+    issn: [1523-4681, 0884-0431]
+    publisher: oup
+    detection: crossref
+    tier: 1
+  - name: JBMR Plus
+    issn: [2473-4039]
+    publisher: oup
+    detection: crossref
+    tier: 2
+    open_access: true
+  - name: Bone Research
+    issn: [2095-6231, 2095-4700]
+    publisher: springer
+    springer_id: 41413
+    detection: springer
+    tier: 1
+    open_access: true
+  - name: Bone
+    issn: [8756-3282, 1873-2763]
+    publisher: elsevier
+    detection: crossref
+    tier: 2

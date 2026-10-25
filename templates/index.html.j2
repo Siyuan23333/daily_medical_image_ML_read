@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DailyRead</title>
+<style>
+:root{--bg:#fafaf8;--fg:#1d1d1b;--muted:#6b6b66;--card:#fff;--line:#e4e4df;--accent:#2a5bd7}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#15161a;--fg:#e8e8e3;--muted:#9a9a93;--card:#1d1f25;--line:#2c2f37;--accent:#7fa3ff}}
+:root[data-theme="dark"]{--bg:#15161a;--fg:#e8e8e3;--muted:#9a9a93;--card:#1d1f25;--line:#2c2f37;--accent:#7fa3ff}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:860px;margin:0 auto;padding:24px 16px 64px}h1{font-size:1.6rem;margin:0 0 4px}.sub{color:var(--muted);margin-bottom:20px}
+a.day{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin-bottom:10px;color:var(--fg);text-decoration:none}
+a.day:hover{border-color:var(--accent)}.d{font-weight:600}.c{color:var(--muted);font-size:.9rem;margin-left:8px}.h{color:var(--muted);font-size:.92rem;margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+</style></head><body><main>
+<h1>DailyRead</h1><div class="sub">Daily digest of new papers in machine learning for medical imaging, radiomics and bone research. {{ reports|length }} days.</div>
+{% for r in reports %}<a class="day" href="{{ r.date }}.html"><span class="d">{{ r.date }}</span><span class="c">{{ r.n_papers }} papers{% if r.counts_str %} &middot; {{ r.counts_str }}{% endif %}</span>{% if r.headline %}<div class="h">{{ r.headline }}</div>{% endif %}</a>{% endfor %}
+</main></body></html>

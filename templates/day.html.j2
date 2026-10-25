@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DailyRead {{ date }}</title>
+<meta name="description" content="Daily digest of new machine learning and medical imaging papers for {{ date }}">
+<style>
+:root{--bg:#fafaf8;--fg:#1d1d1b;--muted:#6b6b66;--card:#ffffff;--line:#e4e4df;--accent:#2a5bd7;--chip:#eef1f8;--bone:#b8641e;--radiomics:#7a3ea0;--imaging:#2a5bd7;--ehr:#1f8a5b;--late:#9a6700}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#15161a;--fg:#e8e8e3;--muted:#9a9a93;--card:#1d1f25;--line:#2c2f37;--accent:#7fa3ff;--chip:#262a35;--bone:#e0945a;--radiomics:#c08ae0;--imaging:#7fa3ff;--ehr:#5fc48f;--late:#e0b24a}}
+:root[data-theme="dark"]{--bg:#15161a;--fg:#e8e8e3;--muted:#9a9a93;--card:#1d1f25;--line:#2c2f37;--accent:#7fa3ff;--chip:#262a35;--bone:#e0945a;--radiomics:#c08ae0;--imaging:#7fa3ff;--ehr:#5fc48f;--late:#e0b24a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:860px;margin:0 auto;padding:24px 16px 64px}
+header h1{font-size:1.6rem;margin:0 0 4px}header .sub{color:var(--muted);font-size:.95rem}
+nav a{color:var(--accent);text-decoration:none;margin-right:14px}nav{margin:10px 0 18px;font-size:.95rem}
+.headline{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:0 0 18px}
+.counts{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px}
+.chip{background:var(--chip);border-radius:999px;padding:4px 12px;font-size:.85rem}
+.chip b{font-weight:600}
+.chip.cur{color:var(--accent);background:transparent;border:1px solid var(--accent)}
+.pill{display:inline-block;font-size:.7rem;font-weight:600;letter-spacing:.02em;color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:0 7px;margin-left:8px;vertical-align:middle;white-space:nowrap}
+.pill::before{content:"\25CF";margin-right:4px;font-size:.6rem;vertical-align:1px}
+article.curated{border-left:3px solid var(--accent)}
+.toc .tools{float:right;font-size:.8rem;font-weight:400;color:var(--muted)}.toc .tools label{cursor:pointer}.toc .tools input{vertical-align:-2px;margin-right:4px}
+.only-curated .toc tr:not(.curated),.only-curated article:not(.curated),.only-curated .sec:not(.has-curated){display:none}
+h2{font-size:1.2rem;margin:28px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+article{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:0 0 12px}
+article h3{font-size:1.05rem;margin:0 0 6px;line-height:1.35}article h3 a{color:var(--fg);text-decoration:none}article h3 a:hover{text-decoration:underline}
+.meta{color:var(--muted);font-size:.88rem;margin-bottom:8px}.meta span{margin-right:10px}.meta .venue b{font-weight:600;color:var(--fg)}abbr{text-decoration:none;border-bottom:1px dotted var(--muted);cursor:help}
+.badge{display:inline-block;font-size:.75rem;font-weight:600;padding:1px 8px;border-radius:999px;color:#fff;vertical-align:middle;margin-right:6px}
+.badge.bone{background:var(--bone)}.badge.radiomics{background:var(--radiomics)}.badge.imaging-ml{background:var(--imaging)}.badge.ehr-nlp{background:var(--ehr)}.badge.other{background:var(--muted)}
+.score{display:inline-block;font-size:.75rem;border:1px solid var(--line);border-radius:6px;padding:0 6px;margin-right:6px;color:var(--muted)}
+.tag{display:inline-block;font-size:.75rem;border-radius:6px;padding:0 6px;margin-right:6px;background:var(--chip)}
+.tag.late{color:var(--late)}
+.links a{color:var(--accent);text-decoration:none;margin-right:12px;font-size:.9rem}
+details{margin-top:10px}summary{cursor:pointer;color:var(--accent);font-weight:600;font-size:.92rem}
+.dd{margin-top:8px;font-size:.95rem}.dd h4{margin:12px 0 4px;font-size:.9rem;text-transform:uppercase;letter-spacing:.03em;color:var(--muted)}.dd ul{margin:0;padding-left:20px}
+footer{color:var(--muted);font-size:.85rem;margin-top:36px}
+.empty{color:var(--muted);font-style:italic}
+.toc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px 14px;margin:0 0 22px}
+.toc h2{font-size:1.05rem;margin:0 0 4px;border:0;padding:0}.toc h3{font-size:.82rem;margin:14px 0 2px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.toc table{width:100%;border-collapse:collapse;font-size:.92rem}.toc td{padding:5px 6px 5px 0;border-top:1px solid var(--line);vertical-align:top}
+.toc td.venue{color:var(--muted);text-align:right;white-space:nowrap;padding-left:12px;width:1%}
+.toc td.venue .vn{display:inline-block;max-width:15rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom}
+.toc a{color:var(--fg);text-decoration:none}.toc a:hover{color:var(--accent);text-decoration:underline}
+.toc .dd{font-size:.72rem;color:var(--accent);margin-left:6px;white-space:nowrap}
+h2 .up{font-size:.75rem;font-weight:400;margin-left:10px;color:var(--accent);text-decoration:none}
+@media (max-width:520px){.toc td.venue{white-space:normal;max-width:38%}.toc td.venue .vn{max-width:9rem}}
+</style>
+</head>
+<body><main>
+<header>
+<h1>DailyRead &middot; {{ date_long }}</h1>
+<div class="sub">{{ n_papers }} relevant paper{{ '' if n_papers == 1 else 's' }}{% if note %} &middot; {{ note }}{% endif %} &middot; generated {{ generated_at }}</div>
+<nav><a href="index.html">All days</a>{% if prev_date %}<a href="{{ prev_date }}.html">&larr; {{ prev_date }}</a>{% endif %}{% if next_date %}<a href="{{ next_date }}.html">{{ next_date }} &rarr;</a>{% endif %}</nav>
+</header>
+{% if headline %}<div class="headline">{{ headline }}</div>{% endif %}
+<div class="counts">{% for t in tracks %}<span class="chip"><b>{{ counts.get(t.key, 0) }}</b> {{ t.label }}</span>{% endfor %}{% if n_curated %}<span class="chip cur" title="Papers from the journals in your watch list"><b>{{ n_curated }}</b> from your journal list</span>{% endif %}{% if failed_sources %}<span class="chip">sources failed: {{ failed_sources|join(', ') }}</span>{% endif %}</div>
+{% if n_papers == 0 %}<p class="empty">No new relevant papers for this day.</p>{% else %}
+<nav class="toc" id="contents"><h2>Contents{% if n_curated %}<span class="tools"><label><input type="checkbox" id="only-curated">only journal list</label></span>{% endif %}</h2>
+{% for t in tracks %}{% set ps = by_track.get(t.key, []) %}{% if ps %}{% set nc = ps|selectattr('curated')|list|length %}<div class="sec{{ ' has-curated' if nc }}"><h3>{{ t.label }} ({{ ps|length }})</h3>
+<table><tbody>{% for p in ps %}<tr{% if p.curated %} class="curated"{% endif %}><td><a href="#{{ p.anchor }}">{{ p.title }}</a>{% if p.deepdive %}<a class="dd" href="#dd-{{ p.anchor }}">deep dive</a>{% endif %}</td><td class="venue"><span class="vn" title="{{ p.venue }}">{{ p.venue }}</span>{% if p.impact_label %} &middot; {{ p.impact_label }}{% endif %}{% if p.curated %}<span class="pill" title="On your curated journal list">journal list</span>{% endif %}</td></tr>{% endfor %}</tbody></table></div>
+{% endif %}{% endfor %}
+</nav>{% endif %}
+{% macro paper_card(p, show_dd) %}
+<article id="{{ 'dd-' ~ p.anchor if show_dd else p.anchor }}"{% if p.curated %} class="curated"{% endif %}>
+<h3><a href="{{ p.url }}">{{ p.title }}</a></h3>
+<div class="meta"><span class="badge {{ p.track }}">{{ p.track_label }}</span><span class="score">score {{ p.score }}</span>{% if p.is_review %}<span class="tag">review</span>{% endif %}{% if p.late_of %}<span class="tag late">late &middot; published {{ p.published }}</span>{% endif %}
+<span class="venue"><b>{{ p.venue }}</b>{% if p.impact_label %} &middot; <abbr title="{{ p.impact_title }}">{{ p.impact_label }}</abbr>{% elif p.is_preprint %} &middot; preprint{% endif %}{% if p.curated %}<span class="pill" title="On your curated journal list">journal list</span>{% endif %}</span><span>{{ p.published }}</span><span>{{ p.authors_short }}</span></div>
+<p>{{ p.summary }}</p>
+<div class="links">{% if p.doi %}<a href="https://doi.org/{{ p.doi }}">DOI</a>{% endif %}{% if p.pdf_url %}<a href="{{ p.pdf_url }}">PDF</a>{% endif %}{% if p.arxiv_id %}<a href="https://arxiv.org/abs/{{ p.arxiv_id }}">arXiv</a>{% endif %}{% if p.pmid %}<a href="https://pubmed.ncbi.nlm.nih.gov/{{ p.pmid }}/">PubMed</a>{% endif %}{% if p.deepdive and not show_dd %}<a href="#dd-{{ p.anchor }}">Deep dive</a>{% endif %}{% if show_dd %}<a href="#{{ p.anchor }}">Summary</a>{% endif %}</div>
+{% if show_dd and p.deepdive %}
+<details open><summary>Deep dive ({{ p.fulltext_label }})</summary><div class="dd">
+<p>{{ p.deepdive.overview }}</p>
+{% for sec, label in [('datasets','Datasets'),('method','Method'),('validation','Validation'),('results','Results'),('limitations','Limitations')] %}{% if p.deepdive[sec] %}<h4>{{ label }}</h4><ul>{% for x in p.deepdive[sec] %}<li>{{ x }}</li>{% endfor %}</ul>{% endif %}{% endfor %}
+{% if p.deepdive.availability %}<h4>Availability</h4><p>{{ p.deepdive.availability }}</p>{% endif %}
+</div></details>
+{% endif %}
+</article>
+{% endmacro %}
+{% if deepdives %}{% set ndc = deepdives|selectattr('curated')|list|length %}<section class="sec{{ ' has-curated' if ndc }}"><h2>Deep dives<a class="up" href="#contents">contents</a></h2>{% for p in deepdives %}{{ paper_card(p, true) }}{% endfor %}</section>{% endif %}
+{% for t in tracks %}{% set ps = by_track.get(t.key, []) %}{% if ps %}{% set nc = ps|selectattr('curated')|list|length %}<section class="sec{{ ' has-curated' if nc }}"><h2>{{ t.label }} ({{ ps|length }})<a class="up" href="#contents">contents</a></h2>{% for p in ps %}{{ paper_card(p, false) }}{% endfor %}</section>{% endif %}{% endfor %}
+<footer>Sources: arXiv, medRxiv, bioRxiv, PubMed, Crossref, Springer Nature API. Scores and summaries by {{ model }}. Window {{ window }}.</footer>
+</main>
+<script>
+(function(){var cb=document.getElementById('only-curated');if(!cb)return;var k='dailyread.onlyCurated';
+function apply(on){document.body.classList.toggle('only-curated',on);cb.checked=on;try{localStorage.setItem(k,on?'1':'0')}catch(e){}}
+var saved=false;try{saved=localStorage.getItem(k)==='1'}catch(e){}
+cb.addEventListener('change',function(){apply(cb.checked)});if(saved)apply(true);})();
+</script>
+</body></html>

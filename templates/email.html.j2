@@ -1,0 +1,10 @@
+<!doctype html><html><body style="font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.5;color:#1d1d1b;max-width:680px;margin:0 auto;padding:16px">
+<h2 style="margin:0 0 4px">DailyRead {{ date }}</h2>
+<p style="margin:0 0 12px;color:#6b6b66">{{ n_papers }} relevant papers{% if n_curated %} &middot; {{ n_curated }} from your journal list (&#9733;){% endif %} &middot; <a href="{{ url }}">open the digest</a></p>
+<p>{{ headline }}</p>
+{% if deepdives %}<h3 style="font-size:16px;margin:18px 0 6px">Deep dives</h3><ul style="padding-left:18px">
+{% for p in deepdives %}<li style="margin-bottom:8px">{% if p.curated %}<span style="color:#2a5bd7">&#9733;</span> {% endif %}<a href="{{ url }}#{{ p.anchor }}"><b>{{ p.title }}</b></a><br><span style="color:#6b6b66">{{ p.venue }} &middot; {{ p.track }} &middot; score {{ p.score }}</span><br>{{ p.one_liner }}</li>
+{% endfor %}</ul>{% endif %}
+{% if failed_sources %}<p style="color:#9a6700">Sources that failed this run: {{ failed_sources|join(', ') }}</p>{% endif %}
+<p><a href="{{ url }}">Full digest</a></p>
+</body></html>

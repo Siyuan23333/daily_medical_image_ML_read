@@ -1,0 +1,26 @@
+# DailyRead {{ date }}
+
+{{ n_papers }} relevant papers{% if n_curated %}, {{ n_curated }} from the curated journal list (marked ★){% endif %}. {% if note %}{{ note }}{% endif %}
+
+{% if headline %}{{ headline }}
+
+{% endif %}{% if n_papers %}## Contents
+
+{% for t in tracks %}{% set ps = by_track.get(t.key, []) %}{% if ps %}**{{ t.label }}**
+{% for p in ps %}- {{ '★ ' if p.curated }}{{ p.title }} ({{ p.venue }}{% if p.impact_label %}, {{ p.impact_label }}{% endif %})
+{% endfor %}
+{% endif %}{% endfor %}{% endif %}{% for t in tracks %}{% set ps = by_track.get(t.key, []) %}{% if ps %}## {{ t.label }} ({{ ps|length }})
+
+{% for p in ps %}### {{ '★ ' if p.curated }}{{ p.title }}
+
+- {{ p.venue }}{% if p.impact_label_long %} ({{ p.impact_label_long }}){% endif %} · {{ p.published }} · {{ p.authors_short }} · track {{ p.track }} · score {{ p.score }}{% if p.is_review %} · review{% endif %}{% if p.late_of %} · late{% endif %}
+- Links: {% if p.doi %}https://doi.org/{{ p.doi }} {% endif %}{% if p.arxiv_id %}https://arxiv.org/abs/{{ p.arxiv_id }} {% endif %}{% if p.pmid %}https://pubmed.ncbi.nlm.nih.gov/{{ p.pmid }}/{% endif %}
+
+{{ p.summary }}
+{% if p.deepdive %}
+**Deep dive ({{ p.fulltext_label }}).** {{ p.deepdive.overview }}
+{% for sec, label in [('datasets','Datasets'),('method','Method'),('validation','Validation'),('results','Results'),('limitations','Limitations')] %}{% if p.deepdive[sec] %}
+- {{ label }}: {{ p.deepdive[sec]|join('; ') }}{% endif %}{% endfor %}
+- Availability: {{ p.deepdive.availability }}
+{% endif %}
+{% endfor %}{% endif %}{% endfor %}
