@@ -12,11 +12,19 @@ from the last successful run, so there is nothing to work out by hand.
 
 ## 1. Preflight (one Bash call)
 
-Work from the project root, the directory that holds `run_daily.sh` (this skill lives under its `.claude/`).
+Everything runs from the project root, the directory that holds `run_daily.sh`. When this skill is installed
+inside the project (`<root>/.claude/skills/`), that is the git top level. When it is installed personally
+(`~/.claude/skills/`), the root is filled in below by the install command in the README, so the skill works
+from any directory and does not rely on shell startup files.
+
+Project root for a personal install: `__PROJECT_ROOT__`
 
 ```bash
-cd "$(git rev-parse --show-toplevel 2>/dev/null || pwd)" && test -x run_daily.sh && ls ~/.daily_read.env >/dev/null && squeue -u "$USER" -n daily_read -h -o "%T %S" 2>/dev/null
+ROOT="${DAILY_READ_ROOT:-__PROJECT_ROOT__}"; [ -x "$ROOT/run_daily.sh" ] || ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+cd "$ROOT" && test -x run_daily.sh && ls ~/.daily_read.env >/dev/null && echo "root: $ROOT" && squeue -u "$USER" -n daily_read -h -o "%T %S" 2>/dev/null
 ```
+
+Use the same `cd "$ROOT"` prefix for every later command; each Bash call starts fresh.
 
 If the scheduled job shows `RUNNING`, do not start a second run: the two would share the SQLite state, and
 `run_daily.sh` refuses with exit code 3 anyway. Tell the user the nightly job is already running and that its
@@ -47,8 +55,10 @@ When the run finishes, summarize it with the bundled script, which reads the sta
 latest reports with their counts, URL, publish and email status, headline, curated-journal papers and deep dives:
 
 ```bash
-python3 .claude/skills/daily-read-now/scripts/report_summary.py --last 3
+python3 "<this skill's base directory>/scripts/report_summary.py" --root "$ROOT" --last 3
 ```
+
+The base directory is the path announced when the skill loads; the script also accepts `DAILY_READ_ROOT`.
 
 Then pull the operational lines from the newest log for anything the script cannot know:
 

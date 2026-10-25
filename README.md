@@ -34,6 +34,12 @@ chmod 600 ~/.daily_read.env     # DEEPSEEK_API_KEY, GITHUB_TOKEN, GITHUB_REPO, S
 runs the same under scrontab (which ignores your shell environment and never loads `~/.bashrc`) as from a terminal.
 
 In Claude Code, `/daily-read-now` (project skill in `.claude/skills/daily-read-now/`) runs the manual form and summarizes the result.
+To use it from any directory, install a personal copy with the project path filled in:
+
+```bash
+mkdir -p ~/.claude/skills && rm -rf ~/.claude/skills/daily-read-now && cp -r .claude/skills/daily-read-now ~/.claude/skills/ \
+  && sed -i "s|__PROJECT_ROOT__|$PWD|g" ~/.claude/skills/daily-read-now/SKILL.md
+```
 A day's page can grow: if a later run finds more papers for a day that already has a report, the page is regenerated with
 the additions and re-sent with a "+N new" subject. Only one run can hold `state/.run.lock` at a time.
 

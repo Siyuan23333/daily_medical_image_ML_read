@@ -8,20 +8,24 @@ import sys
 from pathlib import Path
 
 
-def project_root() -> Path:
+def project_root(explicit: str = "") -> Path:
+    """--root, then DAILY_READ_ROOT, then the project this skill is installed in, then the current directory."""
+    import os
     here = Path(__file__).resolve()
-    for cand in [here.parents[4] if len(here.parents) > 4 else None, Path.cwd()]:
-        if cand and (cand / "run_daily.sh").exists():
-            return cand
-    sys.exit("run from the DailyRead project root (run_daily.sh not found)")
+    cands = [explicit, os.environ.get("DAILY_READ_ROOT", ""), here.parents[4] if len(here.parents) > 4 else "", Path.cwd()]
+    for cand in cands:
+        if cand and (Path(cand) / "run_daily.sh").exists():
+            return Path(cand)
+    sys.exit("DailyRead project root not found: pass --root <dir> (the directory holding run_daily.sh)")
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--last", type=int, default=2)
     ap.add_argument("--date")
+    ap.add_argument("--root", default="", help="project directory holding run_daily.sh")
     a = ap.parse_args()
-    root = project_root()
+    root = project_root(a.root)
     db = root / "state" / "daily_read.sqlite"
     if not db.exists():
         sys.exit(f"no state database at {db}")
