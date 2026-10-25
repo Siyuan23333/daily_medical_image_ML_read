@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DailyRead 2026-10-25</title>
+<meta name="description" content="Daily digest of new machine learning and medical imaging papers for 2026-10-25">
+<style>
+:root{--bg:#fafaf8;--fg:#1d1d1b;--muted:#6b6b66;--card:#ffffff;--line:#e4e4df;--accent:#2a5bd7;--chip:#eef1f8;--bone:#b8641e;--radiomics:#7a3ea0;--imaging:#2a5bd7;--ehr:#1f8a5b;--late:#9a6700}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#15161a;--fg:#e8e8e3;--muted:#9a9a93;--card:#1d1f25;--line:#2c2f37;--accent:#7fa3ff;--chip:#262a35;--bone:#e0945a;--radiomics:#c08ae0;--imaging:#7fa3ff;--ehr:#5fc48f;--late:#e0b24a}}
+:root[data-theme="dark"]{--bg:#15161a;--fg:#e8e8e3;--muted:#9a9a93;--card:#1d1f25;--line:#2c2f37;--accent:#7fa3ff;--chip:#262a35;--bone:#e0945a;--radiomics:#c08ae0;--imaging:#7fa3ff;--ehr:#5fc48f;--late:#e0b24a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:860px;margin:0 auto;padding:24px 16px 64px}
+header h1{font-size:1.6rem;margin:0 0 4px}header .sub{color:var(--muted);font-size:.95rem}
+nav a{color:var(--accent);text-decoration:none;margin-right:14px}nav{margin:10px 0 18px;font-size:.95rem}
+.headline{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:0 0 18px}
+.counts{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px}
+.chip{background:var(--chip);border-radius:999px;padding:4px 12px;font-size:.85rem}
+.chip b{font-weight:600}
+.chip.cur{color:var(--accent);background:transparent;border:1px solid var(--accent)}
+.pill{display:inline-block;font-size:.7rem;font-weight:600;letter-spacing:.02em;color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:0 7px;margin-left:8px;vertical-align:middle;white-space:nowrap}
+.pill::before{content:"\25CF";margin-right:4px;font-size:.6rem;vertical-align:1px}
+article.curated{border-left:3px solid var(--accent)}
+.toc .tools{float:right;font-size:.8rem;font-weight:400;color:var(--muted)}.toc .tools label{cursor:pointer}.toc .tools input{vertical-align:-2px;margin-right:4px}
+.only-curated .toc tr:not(.curated),.only-curated article:not(.curated),.only-curated .sec:not(.has-curated){display:none}
+h2{font-size:1.2rem;margin:28px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+article{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:0 0 12px}
+article h3{font-size:1.05rem;margin:0 0 6px;line-height:1.35}article h3 a{color:var(--fg);text-decoration:none}article h3 a:hover{text-decoration:underline}
+.meta{color:var(--muted);font-size:.88rem;margin-bottom:8px}.meta span{margin-right:10px}.meta .venue b{font-weight:600;color:var(--fg)}abbr{text-decoration:none;border-bottom:1px dotted var(--muted);cursor:help}
+.badge{display:inline-block;font-size:.75rem;font-weight:600;padding:1px 8px;border-radius:999px;color:#fff;vertical-align:middle;margin-right:6px}
+.badge.bone{background:var(--bone)}.badge.radiomics{background:var(--radiomics)}.badge.imaging-ml{background:var(--imaging)}.badge.ehr-nlp{background:var(--ehr)}.badge.other{background:var(--muted)}
+.score{display:inline-block;font-size:.75rem;border:1px solid var(--line);border-radius:6px;padding:0 6px;margin-right:6px;color:var(--muted)}
+.tag{display:inline-block;font-size:.75rem;border-radius:6px;padding:0 6px;margin-right:6px;background:var(--chip)}
+.tag.late{color:var(--late)}
+.links a{color:var(--accent);text-decoration:none;margin-right:12px;font-size:.9rem}
+details{margin-top:10px}summary{cursor:pointer;color:var(--accent);font-weight:600;font-size:.92rem}
+.dd{margin-top:8px;font-size:.95rem}.dd h4{margin:12px 0 4px;font-size:.9rem;text-transform:uppercase;letter-spacing:.03em;color:var(--muted)}.dd ul{margin:0;padding-left:20px}
+footer{color:var(--muted);font-size:.85rem;margin-top:36px}
+.empty{color:var(--muted);font-style:italic}
+.toc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px 14px;margin:0 0 22px}
+.toc h2{font-size:1.05rem;margin:0 0 4px;border:0;padding:0}.toc h3{font-size:.82rem;margin:14px 0 2px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.toc table{width:100%;border-collapse:collapse;font-size:.92rem}.toc td{padding:5px 6px 5px 0;border-top:1px solid var(--line);vertical-align:top}
+.toc td.venue{color:var(--muted);text-align:right;white-space:nowrap;padding-left:12px;width:1%}
+.toc td.venue .vn{display:inline-block;max-width:15rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom}
+.toc a{color:var(--fg);text-decoration:none}.toc a:hover{color:var(--accent);text-decoration:underline}
+.toc .dd{font-size:.72rem;color:var(--accent);margin-left:6px;white-space:nowrap}
+h2 .up{font-size:.75rem;font-weight:400;margin-left:10px;color:var(--accent);text-decoration:none}
+@media (max-width:520px){.toc td.venue{white-space:normal;max-width:38%}.toc td.venue .vn{max-width:9rem}}
+</style>
+</head>
+<body><main>
+<header>
+<h1>DailyRead &middot; Sunday, 25 October 2026</h1>
+<div class="sub">2 relevant papers &middot; generated 2026-10-25 08:15 EDT</div>
+<nav><a href="index.html">All days</a><a href="2026-10-24.html">&larr; 2026-10-24</a></nav>
+</header>
+<div class="headline">Today&#39;s digest centers on two high-scoring studies that both push beyond conventional summary measures toward richer structural characterization. The most notable is &#34;Cortical and trabecular deficits&#34; in hip fracture patients, which tests whether 3D-DXA volumetric and microstructural indices discriminate prevalent fracture status better than areal BMD across 499 participants with femoral neck and intertrochanteric fractures—directly relevant to bone imaging and radiomics-style feature extraction. Also worth attention is &#34;Benchmarking longitudinal local centiles,&#34; which builds reference charts from 5,045 knee MRI scans to detect cartilage changes 12–36 months before incident radiographic osteoarthritis, a useful template for longitudinal normative modeling in musculoskeletal imaging. Together they highlight a shared theme: anatomical variation and aging confound simple metrics, motivating centile- or component-based approaches.</div>
+<div class="counts"><span class="chip"><b>1</b> Medical imaging ML</span><span class="chip"><b>0</b> Radiomics</span><span class="chip"><b>1</b> Bone and skeletal</span><span class="chip"><b>0</b> EHR and clinical NLP</span></div>
+
+<nav class="toc" id="contents"><h2>Contents</h2>
+<div class="sec"><h3>Medical imaging ML (1)</h3>
+<table><tbody><tr><td><a href="#doi-10-64898-2026-10-06-757088">Benchmarking longitudinal local centiles for radiographic knee osteoarthritis prognosis.</a><a class="dd" href="#dd-doi-10-64898-2026-10-06-757088">deep dive</a></td><td class="venue"><span class="vn" title="bioRxiv">bioRxiv</span></td></tr></tbody></table></div>
+<div class="sec"><h3>Bone and skeletal (1)</h3>
+<table><tbody><tr><td><a href="#doi-10-1007-s00774-026-01758-4">Cortical and trabecular deficits in patients with recent hip fractures assessed by DXA and 3D-DXA.</a><a class="dd" href="#dd-doi-10-1007-s00774-026-01758-4">deep dive</a></td><td class="venue"><span class="vn" title="Journal of Bone and Mineral Metabolism">Journal of Bone and Mineral Metabolism</span> &middot; IF≈3.0</td></tr></tbody></table></div>
+
+</nav>
+
+<section class="sec"><h2>Deep dives<a class="up" href="#contents">contents</a></h2>
+<article id="dd-doi-10-64898-2026-10-06-757088">
+<h3><a href="https://pubmed.ncbi.nlm.nih.gov/42926486/">Benchmarking longitudinal local centiles for radiographic knee osteoarthritis prognosis.</a></h3>
+<div class="meta"><span class="badge imaging-ml">Medical imaging ML</span><span class="score">score 9</span>
+<span class="venue"><b>bioRxiv</b></span><span>2026-10-08</span><span>T Li, T Luo, B Chen et al.</span></div>
+<p>Cartilage thickness on MRI is a structural biomarker for osteoarthritis, but anatomical variation and aging can mask early disease changes occurring 12-36 months before incident radiographic OA. The reference charts were built from 5,045 scans of 957 persistently radiographically normal knees in the Osteoarthritis Initiative, a single multi-site cohort. The method proposes longitudinal local centile maps that use normative growth charts as prior information and integrate a knee&#39;s earlier scans to flag cartilage thinner or thicker than expected, compared against regional PCA, radiomics, cross-sectional centile features, and raw-map deep features under participant-separated nested cross-validation. Deep centile features achieved the best AUCs of 0.954 (95% CI 0.931-0.974) at 12 months and 0.969 (0.949-0.985) at 24 months, with balanced accuracy of 0.917 and 0.931, outperforming raw-map deep features in all 12 classifiers after multiple-comparison correction, while no representation consistently improved 36-month prediction. The approach converts cartilage thickness maps into reference-based deviation maps, offering interpretable regional longitudinal centile profiles with the second-highest accuracy alongside the top-performing deep centile features.</p>
+<div class="links"><a href="https://doi.org/10.64898/2026.10.06.757088">DOI</a><a href="https://pubmed.ncbi.nlm.nih.gov/42926486/">PubMed</a><a href="#doi-10-64898-2026-10-06-757088">Summary</a></div>
+
+<details open><summary>Deep dive (from abstract only)</summary><div class="dd">
+<p>This study addresses a clinically important question in knee osteoarthritis (OA): whether cartilage thickness measured on MRI can predict incident radiographic OA 12–36 months before it becomes visible, despite the masking effects of anatomical variation and normal aging. The authors propose &#39;longitudinal local centile maps,&#39; which treat normative cartilage-thickness growth charts as prior information and integrate a knee&#39;s earlier scans to flag regions that are thinner or thicker than expected for that knee&#39;s own trajectory. Reference charts were built from 5,045 MRI scans of 957 persistently radiographically normal knees in the Osteoarthritis Initiative (OAI). Using participant-separated nested cross-validation, longitudinal centile profiles achieved higher 12- and 24-month AUCs for predicting incident radiographic OA than regional PCA, radiomics, cross-sectional centile features, and raw-map deep features across most classifiers. Deep centile features performed best (AUC 0.954 at 12 months, 0.969 at 24 months; balanced accuracy 0.917 and 0.931) and beat raw-map deep features in all 12 classifiers after multiple-comparison correction. Conventional descriptors added little on top of centile profiles, and cross-sectional centiles added little beyond longitudinal ones. No representation consistently improved 36-month prediction. The genuinely new element is the reframing of cartilage maps as reference-based deviation maps conditioned on a patient&#39;s prior scans, combining normative centiles with longitudinal personalization; the abstract reports no external validation, so generalizability remains unproven.</p>
+<h4>Datasets</h4><ul><li>Osteoarthritis Initiative (OAI): knee MRI, 5,045 scans from 957 persistently radiographically normal knees; public cohort; used to build normative reference charts and for participant-separated nested cross-validation (train/validation); no external test set reported</li></ul><h4>Method</h4><ul><li>Longitudinal local centile maps: normative growth-chart priors plus integration of a knee&#39;s earlier scans to compute per-location expected thickness and deviations</li><li>Feature families compared: regional longitudinal centile profiles, cross-sectional centiles, regional PCA, radiomics, raw-map deep features, and deep centile features</li><li>Multiple classifiers (12 reported) evaluated under participant-separated nested cross-validation</li><li>Deep centile features derived from centile/deviation maps; raw-map deep features as the deep-learning baseline</li></ul><h4>Validation</h4><ul><li>Internal only: participant-separated nested cross-validation within OAI; no external or prospective cohort reported</li><li>Metrics: AUC with 95% CIs and balanced accuracy at 12, 24, and 36 months</li><li>Multiple-comparison correction applied when comparing deep centile vs raw-map deep features across 12 classifiers</li></ul><h4>Results</h4><ul><li>Deep centile features: AUC 0.954 (95% CI 0.931–0.974) at 12 months and 0.969 (0.949–0.985) at 24 months</li><li>Balanced accuracy 0.917 (12 months) and 0.931 (24 months) for deep centile features</li><li>Longitudinal centile profiles outperformed regional PCA, radiomics, cross-sectional centiles, and raw-map deep features across most classifiers</li><li>Deep centile features beat raw-map deep features in all 12 classifiers after multiple-comparison correction</li><li>No representation consistently improved 36-month prediction</li></ul><h4>Limitations</h4><ul><li>Abstract only; full methodological detail (preprocessing, centile construction, hyperparameters, class balance) unavailable</li><li>No external validation; all results are internal cross-validation within a single OAI cohort, so generalizability is untested</li><li>Radiographic OA incidence is a coarse outcome; no symptomatic or structural progression endpoints reported</li><li>36-month horizon showed no consistent benefit, and the abstract does not report calibration, decision-curve analysis, or handling of class imbalance</li></ul>
+<h4>Availability</h4><p>not stated</p>
+</div></details>
+
+</article>
+
+<article id="dd-doi-10-1007-s00774-026-01758-4">
+<h3><a href="https://pubmed.ncbi.nlm.nih.gov/42926210/">Cortical and trabecular deficits in patients with recent hip fractures assessed by DXA and 3D-DXA.</a></h3>
+<div class="meta"><span class="badge bone">Bone and skeletal</span><span class="score">score 9</span>
+<span class="venue"><b>Journal of Bone and Mineral Metabolism</b> &middot; <abbr title="OpenAlex 2-year mean citedness, approximates the impact factor">IF≈3.0</abbr></span><span>2026-10-24</span><span>LA Ramírez Stieben, ML Brance, S Di Gregorio et al.</span></div>
+<p>Areal BMD from DXA does not fully capture the volumetric and microstructural deficits linked to hip fractures, so the authors asked whether 3D-DXA cortical and trabecular measures improve discrimination of prevalent fracture status beyond aBMD. The descriptive cohort comprised 499 individuals (110 femoral neck fractures, 123 intertrochanteric fractures, 266 controls) assessed at the contralateral hip within 15 days of fracture, with LASSO models evaluated in 515 participants having complete predictor data; the abstract does not state whether the cohort was single- or multi-centre. DXA and 3D-DXA provided trabecular vBMD, cortical surface BMD and cortical thickness, with TBS and FRAX described but excluded from penalized models. Total hip aBMD alone gave an AUC of 0.646, the LASSO λmin model reached 0.692 (p&lt;0.001) and the λ1se model 0.663 (p=0.034), and 51% of fractured patients did not meet densitometric criteria for osteoporosis. The work indicates that 3D-DXA detects cortical and trabecular deficits in fracture patients lacking densitometric osteoporosis, though the gain in discrimination is modest and needs prospective external validation.</p>
+<div class="links"><a href="https://doi.org/10.1007/s00774-026-01758-4">DOI</a><a href="https://pubmed.ncbi.nlm.nih.gov/42926210/">PubMed</a><a href="#doi-10-1007-s00774-026-01758-4">Summary</a></div>
+
+<details open><summary>Deep dive (from abstract only)</summary><div class="dd">
+<p>This study asks whether 3D-DXA-derived cortical and trabecular bone parameters capture structural deficits in patients with recent hip fracture that are missed by conventional areal BMD (aBMD), and whether they improve discrimination of prevalent fracture status. The authors performed a cross-sectional descriptive analysis of 499 individuals (110 femoral neck fractures, 123 intertrochanteric fractures, 266 controls), imaging the contralateral hip within 15 days of fracture with DXA and 3D-DXA to obtain trabecular volumetric BMD, cortical surface BMD, and cortical thickness; TBS and FRAX were described but excluded from penalized models. LASSO logistic models were fit in 515 participants with complete predictor data. Headline findings: 51% of fractured patients did not meet densitometric osteoporosis criteria; in the low-bone-mass subgroup, fractured subjects had lower trabecular vBMD, while osteoporotic subjects additionally showed reduced cortical sBMD; exploratory site-specific patterns suggested lower trochanteric trabecular measures in intertrochanteric fractures and lower femoral neck cortical thickness in femoral neck fractures. Discrimination was modest: total hip aBMD alone gave AUC 0.646, the LASSO λmin model 0.692 (p&lt;0.001), and the more parsimonious λ1se model 0.663 (p=0.034). The genuinely new element is the demonstration that 3D-DXA structural deficits are present in fracture patients lacking densitometric osteoporosis, though the incremental discriminative gain over aBMD is small and cross-sectional, so clinical utility remains unproven.</p>
+<h4>Datasets</h4><ul><li>Single-center cohort, n=499 (FNfx 110, ITfx 123, controls 266); DXA + 3D-DXA of contralateral hip; private; cross-sectional analysis, LASSO models in 515 with complete data (no external test set reported)</li></ul><h4>Method</h4><ul><li>3D-DXA reconstruction from DXA images yielding trabecular vBMD, cortical surface BMD, and cortical thickness, plus total hip aBMD</li><li>LASSO-penalized logistic regression with λmin and λ1se selection; TBS and FRAX excluded from penalized models</li><li>Comparator: total hip aBMD alone</li><li>Descriptive subgroup analyses stratified by densitometric status (low bone mass vs osteoporosis) and fracture type</li></ul><h4>Validation</h4><ul><li>Internal cross-sectional discrimination only; no external or prospective validation</li><li>AUC with p-values for AUC improvement over aBMD (λmin p&lt;0.001; λ1se p=0.034)</li><li>No apparent external test cohort or formal calibration analysis reported</li></ul><h4>Results</h4><ul><li>Total hip aBMD alone: AUC 0.646</li><li>LASSO λmin model: AUC 0.692 (p&lt;0.001 vs aBMD)</li><li>LASSO λ1se model: AUC 0.663 (p=0.034 vs aBMD)</li><li>51% of fractured patients did not meet densitometric osteoporosis criteria</li><li>Low bone mass subgroup: lower trabecular vBMD in fractured vs controls; osteoporotic subgroup also lower cortical sBMD</li></ul><h4>Limitations</h4><ul><li>Cross-sectional design with fracture assessed at contralateral hip within 15 days; causality and prospective prediction untested</li><li>Modest incremental AUC over aBMD; authors call for prospective external validation</li><li>Exploratory site-specific fracture-type comparisons with most differences only versus controls</li><li>Abstract-only report: no details on 3D-DXA software, covariate adjustment, calibration, or multiple-comparison correction</li></ul>
+<h4>Availability</h4><p>not stated</p>
+</div></details>
+
+</article>
+</section>
+<section class="sec"><h2>Medical imaging ML (1)<a class="up" href="#contents">contents</a></h2>
+<article id="doi-10-64898-2026-10-06-757088">
+<h3><a href="https://pubmed.ncbi.nlm.nih.gov/42926486/">Benchmarking longitudinal local centiles for radiographic knee osteoarthritis prognosis.</a></h3>
+<div class="meta"><span class="badge imaging-ml">Medical imaging ML</span><span class="score">score 9</span>
+<span class="venue"><b>bioRxiv</b></span><span>2026-10-08</span><span>T Li, T Luo, B Chen et al.</span></div>
+<p>Cartilage thickness on MRI is a structural biomarker for osteoarthritis, but anatomical variation and aging can mask early disease changes occurring 12-36 months before incident radiographic OA. The reference charts were built from 5,045 scans of 957 persistently radiographically normal knees in the Osteoarthritis Initiative, a single multi-site cohort. The method proposes longitudinal local centile maps that use normative growth charts as prior information and integrate a knee&#39;s earlier scans to flag cartilage thinner or thicker than expected, compared against regional PCA, radiomics, cross-sectional centile features, and raw-map deep features under participant-separated nested cross-validation. Deep centile features achieved the best AUCs of 0.954 (95% CI 0.931-0.974) at 12 months and 0.969 (0.949-0.985) at 24 months, with balanced accuracy of 0.917 and 0.931, outperforming raw-map deep features in all 12 classifiers after multiple-comparison correction, while no representation consistently improved 36-month prediction. The approach converts cartilage thickness maps into reference-based deviation maps, offering interpretable regional longitudinal centile profiles with the second-highest accuracy alongside the top-performing deep centile features.</p>
+<div class="links"><a href="https://doi.org/10.64898/2026.10.06.757088">DOI</a><a href="https://pubmed.ncbi.nlm.nih.gov/42926486/">PubMed</a><a href="#dd-doi-10-64898-2026-10-06-757088">Deep dive</a></div>
+
+</article>
+</section><section class="sec"><h2>Bone and skeletal (1)<a class="up" href="#contents">contents</a></h2>
+<article id="doi-10-1007-s00774-026-01758-4">
+<h3><a href="https://pubmed.ncbi.nlm.nih.gov/42926210/">Cortical and trabecular deficits in patients with recent hip fractures assessed by DXA and 3D-DXA.</a></h3>
+<div class="meta"><span class="badge bone">Bone and skeletal</span><span class="score">score 9</span>
+<span class="venue"><b>Journal of Bone and Mineral Metabolism</b> &middot; <abbr title="OpenAlex 2-year mean citedness, approximates the impact factor">IF≈3.0</abbr></span><span>2026-10-24</span><span>LA Ramírez Stieben, ML Brance, S Di Gregorio et al.</span></div>
+<p>Areal BMD from DXA does not fully capture the volumetric and microstructural deficits linked to hip fractures, so the authors asked whether 3D-DXA cortical and trabecular measures improve discrimination of prevalent fracture status beyond aBMD. The descriptive cohort comprised 499 individuals (110 femoral neck fractures, 123 intertrochanteric fractures, 266 controls) assessed at the contralateral hip within 15 days of fracture, with LASSO models evaluated in 515 participants having complete predictor data; the abstract does not state whether the cohort was single- or multi-centre. DXA and 3D-DXA provided trabecular vBMD, cortical surface BMD and cortical thickness, with TBS and FRAX described but excluded from penalized models. Total hip aBMD alone gave an AUC of 0.646, the LASSO λmin model reached 0.692 (p&lt;0.001) and the λ1se model 0.663 (p=0.034), and 51% of fractured patients did not meet densitometric criteria for osteoporosis. The work indicates that 3D-DXA detects cortical and trabecular deficits in fracture patients lacking densitometric osteoporosis, though the gain in discrimination is modest and needs prospective external validation.</p>
+<div class="links"><a href="https://doi.org/10.1007/s00774-026-01758-4">DOI</a><a href="https://pubmed.ncbi.nlm.nih.gov/42926210/">PubMed</a><a href="#dd-doi-10-1007-s00774-026-01758-4">Deep dive</a></div>
+
+</article>
+</section>
+<footer>Sources: arXiv, medRxiv, bioRxiv, PubMed, Crossref, Springer Nature API. Scores and summaries by deepseek-chat. Window 2026-10-24 18:49 to 2026-10-25 08:13 America/New_York.</footer>
+</main>
+<script>
+(function(){var cb=document.getElementById('only-curated');if(!cb)return;var k='dailyread.onlyCurated';
+function apply(on){document.body.classList.toggle('only-curated',on);cb.checked=on;try{localStorage.setItem(k,on?'1':'0')}catch(e){}}
+var saved=false;try{saved=localStorage.getItem(k)==='1'}catch(e){}
+cb.addEventListener('change',function(){apply(cb.checked)});if(saved)apply(true);})();
+</script>
+</body></html>
