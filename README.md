@@ -14,7 +14,7 @@ chmod 600 ~/.daily_read.env     # DEEPSEEK_API_KEY, GITHUB_TOKEN, GITHUB_REPO, S
                                 # CONTACT_EMAIL, DIGEST_EMAIL_TO, DIGEST_EMAIL_FROM, SLURM_ACCOUNT, SLURM_PARTITION
 ./run_daily.sh test-llm         # one small DeepSeek call
 ./run_daily.sh test-email       # one test email through the Purdue relay
-./install_scrontab.sh           # render scrontab.txt from scrontab.template and install the daily 01:00 standby job (Gilbreth)
+./install_scrontab.sh           # render scrontab.txt from scrontab.template and install the daily 00:00 standby job (Gilbreth)
 ```
 
 ## Daily use

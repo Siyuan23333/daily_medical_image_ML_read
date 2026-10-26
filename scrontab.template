@@ -1,7 +1,7 @@
 # Rendered into scrontab.txt by install_scrontab.sh; account, partition and paths come from ~/.daily_read.env.
-# Runs DailyRead daily at 01:00 America/New_York on standby (not charged). No --deadline: scrontab evaluates it at install time, which conflicts with the scheduled start.
+# Runs DailyRead daily at 00:00 America/New_York on standby (not charged). No --deadline: scrontab evaluates it at install time, which conflicts with the scheduled start.
 #SCRON --account=__SLURM_ACCOUNT__ --partition=__SLURM_PARTITION__ --qos=standby
 #SCRON --gpus-per-node=1 --nodes=1 --ntasks=1 --cpus-per-task=2 --mem=8G
 #SCRON --time=02:00:00 --job-name=daily_read
 #SCRON --output=__ROOT__/logs/scron-%j.log
-0 1 * * * __ROOT__/run_daily.sh
+0 0 * * * __ROOT__/run_daily.sh

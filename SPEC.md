@@ -247,11 +247,11 @@ Slurm `scrontab` on Gilbreth (user crontab is disabled by PAM).
 #SCRON --gpus-per-node=1 --nodes=1 --ntasks=1 --cpus-per-task=2 --mem=8G
 #SCRON --time=02:00:00 --job-name=daily_read
 #SCRON --output=__ROOT__/logs/scron-%j.log
-0 1 * * * __ROOT__/run_daily.sh
+0 0 * * * __ROOT__/run_daily.sh
 ```
 
 - `install_scrontab.sh` renders the placeholders from `SLURM_ACCOUNT`, `SLURM_PARTITION` and the project path.
-- Submitted at 01:00 America/New_York on standby (not charged); moved from 04:00 on 2026-10-25 to give a queued standby job more of the night.
+- Submitted at 00:00 America/New_York on standby (not charged); moved from 04:00 to 01:00 and then to midnight on 2026-10-25 to give a queued standby job the whole night.
 - No `--deadline`: scrontab evaluates `now+...` when the table is installed,
   which Slurm rejects against the scheduled start. A standby job that waits
   simply runs later; scrontab keeps one job per entry, so runs never overlap.
@@ -406,12 +406,13 @@ pymupdf, jinja2, pyyaml, openai (client for DeepSeek), rapidfuzz, pytest.
 | 2026-10-25 | Dropped the imaging+DL PubMed topic query; every paper shows its venue and impact factor (JCR for the curated list, OpenAlex 2-year citedness elsewhere) |
 | 2026-10-25 | Per-source thresholds: curated journals 7, PubMed queries 9, preprints 9; journal papers with impact factor below 2 dropped (preprints and unknown-IF venues kept). Trial day Oct 24: 18 papers |
 | 2026-10-25 | New PubMed query `hrpqct_dxa` (HR-pQCT and DXA on bone, no ML required) with its own threshold of 8; HR-pQCT/DXA-centred bone studies count as core in the scope and scoring prompt |
-| 2026-10-25 | GO-LIVE: first real digest (2026-10-24, 65 papers incl. first-run arXiv backlog) pushed to github.com/Siyuan23333/daily_medical_image_ML_read, live at siyuan23333.github.io/daily_medical_image_ML_read, emailed to the Purdue inbox; scrontab installed (01:00 Eastern, standby, 2 h limit); trial state kept in state/trial-2026-10-25.sqlite and digests_trial/ |
+| 2026-10-25 | GO-LIVE: first real digest (2026-10-24, 65 papers incl. first-run arXiv backlog) pushed to github.com/Siyuan23333/daily_medical_image_ML_read, live at siyuan23333.github.io/daily_medical_image_ML_read, emailed to the Purdue inbox; scrontab installed (00:00 Eastern from 2026-10-25 evening, standby, 2 h limit); trial state kept in state/trial-2026-10-25.sqlite and digests_trial/ |
 | 2026-10-25 | Run time moved to 01:00 Eastern (standby kept, no deadline flag) |
 | 2026-10-25 | Partition changed from a10 to a30 (group allocation holds 2 A30 GPUs) |
 | 2026-10-25 | Personal values (contact address, digest recipients, Slurm account) moved from the repo to the env file before publishing the code; scrontab.txt is rendered from scrontab.template by install_scrontab.sh |
 | 2026-10-25 | Manual on-demand report: `--include-today` run option, same-day report extension, run lock, and the `/daily-read-now` project skill |
 | 2026-10-25 | Preprint threshold raised from 9 to 10 |
+| 2026-10-25 | Scheduled run moved to 00:00 Eastern and back to the a10 partition (standby start estimates were about a day shorter than a30) |
 | 2026-10-25 | Curated-journal papers highlighted: listed first within each track, 'journal list' pill next to the venue in the contents table and card meta, accent left border on cards, header chip with the count, 'only journal list' toggle (per-viewer, localStorage); ★ prefix in the Markdown twin and email. PubMed journal titles cleaned (subtitle and place qualifiers dropped, ISO abbreviation fallback, conservative title case) after a 176-character title broke the contents table |
 
 ## 15. Before the build can finish
@@ -424,6 +425,6 @@ User actions:
    the repo settings.
 4. When Elsevier approves the TDM key, replace `ELSEVIER_API_KEY`.
 
-Accepted defaults: top-N = 5, 12-hour overlap, 7-day catch-up cap, 01:00 run
+Accepted defaults: top-N = 5, 12-hour overlap, 7-day catch-up cap, 00:00 run
 time, 2 h job time limit, subject prefix `[DailyRead]`.
 Score thresholds: curated journals 7, PubMed topic queries 9 (the `hrpqct_dxa` query 8), preprints 10; minimum impact factor 2 for journal papers (decided after the trial run).
