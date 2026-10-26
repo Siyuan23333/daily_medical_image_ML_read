@@ -26,6 +26,7 @@ chmod 600 ~/.daily_read.env     # DEEPSEEK_API_KEY, GITHUB_TOKEN, GITHUB_REPO, S
 ./run_daily.sh --no-email --no-push         # full run but keep everything local
 ./run_daily.sh --since 2026-10-20           # one report per day from that date (catch-up)
 ./run_daily.sh --include-today              # manual run: everything since the last report, including today so far
+./skip_scheduled_run.sh                     # after a manual run: cancel the due-but-unstarted nightly job and re-arm the schedule
 ./run_daily.sh rebuild --date 2026-10-24    # re-render one day's page from stored results
 ./run_daily.sh stats                        # score distribution and recent scored papers
 ```

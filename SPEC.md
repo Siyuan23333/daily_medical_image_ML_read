@@ -293,7 +293,9 @@ Reports are always per calendar day (America/New_York), never per run.
   far today. The next run extends that day's page with later arrivals and
   re-sends it with a "+N new" subject; a page for a day is therefore never
   replaced by a smaller one. A lock file keeps manual and scheduled runs from
-  overlapping.
+  overlapping. After a manual run, `skip_scheduled_run.sh` cancels the nightly
+  job if it is due but still queued and re-arms the schedule for the next
+  midnight, so the day is not sent twice.
 - If a run is skipped or delayed (standby queue, outage, travel), the next run's
   window extends back to the last success, capped at 7 days, and produces
   one report per missed day, each containing only that day's papers, each

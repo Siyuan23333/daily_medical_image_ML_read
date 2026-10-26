@@ -70,7 +70,22 @@ Exit code 3 means another run held the lock; exit code 2 means the env file or v
 failed is not fatal: the page names it and the next run picks the gap up. "nothing to report" is a real
 outcome on a quiet stretch, not an error.
 
-## 4. Tell the user
+## 4. Retire the day's scheduled job
+
+The nightly job is a standby Slurm job that often starts hours after its midnight due time. If it is still
+pending when a manual run has just covered the day, it would later re-send the same day with a handful of
+additions. After a successful run (not after `--dry-run`), retire it:
+
+```bash
+cd "$ROOT" && ./skip_scheduled_run.sh
+```
+
+The script cancels only a pending job whose due time has passed, re-arms the schedule for the next midnight
+(scrontab disables an entry whose job is cancelled, so it reinstalls the table), and leaves a job that is
+already running alone, because the run lock prevents overlap and that run only adds later arrivals. Report
+its one-line outcome to the user.
+
+## 5. Tell the user
 
 Lead with the outcome, then one block per day the run produced, newest first:
 
