@@ -13,7 +13,7 @@ relevance:
   thresholds:
     curated: 7           # the journals in config/journals.yaml
     pubmed_query: 9      # PubMed topic queries in config/pubmed_queries.yaml
-    preprint: 9          # arXiv, medRxiv, bioRxiv
+    preprint: 10         # arXiv, medRxiv, bioRxiv (raised from 9 on 2026-10-25)
   # Journal papers whose venue impact factor is below this are dropped (JCR value from
   # config/impact_factors.yaml, otherwise OpenAlex 2-year citedness). Preprints and
   # venues with no known value are kept. 0 disables the cut.

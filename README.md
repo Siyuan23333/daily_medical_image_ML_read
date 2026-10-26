@@ -56,7 +56,7 @@ templates/  day.html.j2 index.html.j2 day.md.j2 email.txt.j2 email.html.j2
 ```
 
 Edit `config/scope.md` to change what counts as relevant, `config/settings.yaml` for thresholds, top-N, email and schedule parameters.
-Thresholds are per source class (`relevance.thresholds`: `curated` journals 7, `pubmed_query` 9, `preprint` 9) and journal
+Thresholds are per source class (`relevance.thresholds`: `curated` journals 7, `pubmed_query` 9, `preprint` 10) and journal
 papers below `relevance.min_impact_factor` (2) are dropped; preprints and venues with no known impact factor are kept.
 A PubMed query in `config/pubmed_queries.yaml` may set its own `threshold` (the HR-pQCT/DXA query uses 8).
 After changing any of these, `./run_daily.sh rebuild --date YYYY-MM-DD` re-renders an existing day under the new rules.

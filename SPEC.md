@@ -52,7 +52,7 @@ from (decided 2026-10-25 after the trial run):
 |---|---|---|
 | `curated` (the journal list in section 4) | 7 | high-trust venues; a looser bar admits the borderline EHR/NLP and human-AI papers |
 | `pubmed_query` (PubMed topic queries) | 9 | the score-8 hits were mostly dental, orthopaedic and sports-medicine venues |
-| `preprint` (arXiv, medRxiv, bioRxiv) | 9 | volume control; score 8 preprints were on-topic but numerous |
+| `preprint` (arXiv, medRxiv, bioRxiv) | 10 | raised from 9 on 2026-10-25 at the user's request; in the first two live days no preprint scored 10 (45 scored 9), so preprints now appear only for exceptional papers |
 
 After scoring, journal papers whose venue impact factor is below 2 are dropped
 (`min_impact_factor`). The value is the JCR figure for the curated list and the
@@ -411,6 +411,7 @@ pymupdf, jinja2, pyyaml, openai (client for DeepSeek), rapidfuzz, pytest.
 | 2026-10-25 | Partition changed from a10 to a30 (group allocation holds 2 A30 GPUs) |
 | 2026-10-25 | Personal values (contact address, digest recipients, Slurm account) moved from the repo to the env file before publishing the code; scrontab.txt is rendered from scrontab.template by install_scrontab.sh |
 | 2026-10-25 | Manual on-demand report: `--include-today` run option, same-day report extension, run lock, and the `/daily-read-now` project skill |
+| 2026-10-25 | Preprint threshold raised from 9 to 10 |
 | 2026-10-25 | Curated-journal papers highlighted: listed first within each track, 'journal list' pill next to the venue in the contents table and card meta, accent left border on cards, header chip with the count, 'only journal list' toggle (per-viewer, localStorage); ★ prefix in the Markdown twin and email. PubMed journal titles cleaned (subtitle and place qualifiers dropped, ISO abbreviation fallback, conservative title case) after a 176-character title broke the contents table |
 
 ## 15. Before the build can finish
@@ -425,4 +426,4 @@ User actions:
 
 Accepted defaults: top-N = 5, 12-hour overlap, 7-day catch-up cap, 01:00 run
 time, 2 h job time limit, subject prefix `[DailyRead]`.
-Score thresholds: curated journals 7, PubMed topic queries 9 (the `hrpqct_dxa` query 8), preprints 9; minimum impact factor 2 for journal papers (decided after the trial run).
+Score thresholds: curated journals 7, PubMed topic queries 9 (the `hrpqct_dxa` query 8), preprints 10; minimum impact factor 2 for journal papers (decided after the trial run).
